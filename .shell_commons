@@ -1,0 +1,195 @@
+# Common shell settings
+
+# Load utility functions
+source $HOME/.shell_functions
+
+# Paths {
+	# Default Empty Setting.
+	PATH=""
+
+	# Include system binaries.
+	PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+	# Include binaries in home directory.
+	PATH="$HOME/bin:$PATH"
+
+	# Adding some paths
+	#PATH="$HOME/.local/bin:$PATH"
+	
+	# Set common bin paths.
+	#common_bin_dirs=(mutt mkdirs)
+	#for common_dir in "${common_bin_dirs[@]}"; do
+	#	if [ -d "$HOME/bin/$common_dir" ]; then
+	#		PATH="$PATH:$HOME/bin/$common_dir"
+	#	fi
+	#done
+# }
+
+# Enviroment {
+	# Use THE text editor
+	# Preferred editor for local and remote sessions
+	if [[ -n $SSH_CONNECTION ]]; then
+		export EDITOR='vim'
+		export VISUAL='vim'
+		export CSHEDIT='vim'
+	else
+		export EDITOR='nvim'
+		export VISUAL='nvim'
+		export CSHEDIT='nvim'
+	fi
+
+	# and THE only pager
+	export PAGER=less
+
+	# Source aliases
+	sourceifexists $HOME/.shell_aliases
+
+	# Let others know what underlying terminal emulator is used.
+	export TERMEMU=urxvt
+
+	# Docker proxy
+	export http_proxy="http://127.0.0.1:1087"
+	export https_proxy=$http_proxy
+	export no_proxy="127.0.0.1,localhost,::1,172.16.5.4"
+
+	# A better compiler for C lang.
+	type clang >/dev/null 2>&1
+	if [ "$?" -eq 0 ]; then
+    	export CC=clang
+    	export CXX=clang++
+    fi
+
+    # A better env for Golang
+    type go >/dev/null 2>&1
+    if [ "$?" -eq 0 ]; then
+        export GOPATH="$HOME/Projects/Go"
+        export PATH="$GOPATH/bin:$PATH"
+    fi
+
+	# Global locale
+	export LC_ALL=en_US.UTF-8
+	export LANG=en_US.UTF-8
+
+    # Emcc
+    export LLVM_ROOT=/usr/local/opt/emscripten/libexec/llvm/bin
+
+    # Enable theme vi-mode
+    export RPS1="%{$reset_color%}"
+
+    # Tmux
+    if [ -n "$TMUX" ]; then
+        export TMUX_CUSTOM_FUNCS_PATH=${HOME}/.tmux/functions
+    fi
+# }
+
+# UI {
+	# Custom ls colors
+	dircolorstheme=$HOME/.dircolors;
+	if [ -f $dircolorstheme ]; then
+		eval `gdircolors $dircolorstheme`
+	fi
+
+	# Use coloful terminal
+	case "$TERM" in
+	    xterm*)		export TERM=xterm-256color ;;
+	    screen*)	export TERM=screen-256color ;;
+	    rxvt*)		export TERM=rxvt-unicode-256color ;;
+	esac
+# }
+
+# Programs {
+	# Less {
+		# Syntax highlighting for less with src-highlight
+		type src-hilite-lesspipe.sh &> /dev/null
+		if [ $? -eq 0 ]; then
+			export LESSOPEN="| src-hilite-lesspipe.sh %s"
+		fi
+
+		LESS=
+		LESS="$LESS --RAW-CONTROL-CHARS"	# Display colors
+		LESS="$LESS --ignore-case"		# Case insensitive search.
+		LESS="$LESS --status-column"		# Status column with number of lines etc.
+
+		LESS="$LESS --no-lessopen"		# Display usage of LESSOPEN
+		LESS="$LESS --LINE-NUMBERS"		# Show line numbers
+		#LESS="$LESS --mouse-support"		# TODO some lessess seems to have this opt.
+		
+		export LESS
+	# }
+
+	# Dot files manager {
+		if [ -d "$HOME/.dotfiles/bin" ]; then
+			PATH="$HOME/.dotfiles/bin:$PATH"
+		fi
+	# }
+	
+    # Fuzzy Finder {
+        # Init
+        [ -z "$ZSH_NAME" ] && [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+    
+        # Use ~~ as the trigger sequence instead of the default **
+        export FZF_COMPLETION_TRIGGER='>>'
+
+        # Options to fzf command
+        export FZF_DEFAULT_OPTS='
+            +x --reverse --inline-info --ansi
+            --color fg:-1,bg:-1,hl:230,fg+:-1,bg+:-1,hl+:229
+            --color info:150,prompt:110,spinner:150,pointer:167,marker:174
+        '
+
+        # Options to fzf C-T command
+        export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
+
+        # Use fd (https://github.com/sharkdp/fd) instead of the default find
+        # command for listing path candidates.
+        # - The first argument to the function ($1) is the base path to start traversal
+        # - See the source code (completion.{bash,zsh}) for the details.
+        _fzf_compgen_path() {
+            fd --hidden --follow --exclude ".git" . "$1"
+        }
+
+        # Use fd to generate the list for directory completion
+        _fzf_compgen_dir() {
+            fd --type d --hidden --follow --exclude ".git" . "$1"
+        }
+    # }
+
+    # File plugin
+    export PATH="/usr/local/opt/file-formula/bin:$PATH"
+
+    # Curl plugin
+    export PATH="/usr/local/opt/curl/bin:$PATH"
+
+	# Powerline plugin.
+	export POWERLINE_ROOT=$HOME/Library/Python/3.6/lib/python/site-packages/powerline
+	#type powerline-daemon >/dev/null 2>&1
+	#if [ $? -eq 0 ]; then
+	#	powerline-daemon -q
+	#fi
+
+	# Android SDK
+	#if [ -d "$HOME/src/android-sdk-linux/" ]; then
+	#	PATH="$HOME/src/android-sdk-linux/tools/:$HOME/src/android-sdk-linux/platform-tools/:$PATH"
+	#fi
+	
+	# PHP56
+	#PATH="$(brew --prefix homebrew/php/php56)/bin:$PATH"
+
+	# PHP7
+	PATH="$(brew --prefix homebrew/php/php70)/bin:$PATH"
+
+	# ChinaDNS (deprecate)
+	#chinadns=`ps -ef | grep -v 'grep' | grep -c 'chinadns'`
+	#if [ $chinadns -eq 0 ]; then
+	#	chinadns -c $HOME/.chnroute -s 117.50.11.11,127.0.0.1:15353 -m >/dev/null & 2>&1
+	#fi
+
+	# Open VPN
+	PATH="$(brew --prefix openvpn)/sbin:$PATH"
+
+	# Homebrew
+	export HOMEBREW_GITHUB_API_TOKEN=62499e42f22ca1bb09cd352bba387321e9bc7c67
+
+    # XeLatex
+    PATH="/usr/local/texlive/2018basic/bin/x86_64-darwin:$PATH"
+# }

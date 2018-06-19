@@ -1,0 +1,2 @@
+# This is a common problem in tmux / screen (see also tmux/#131). The corresponding timeout needs to be tweaked to a low value (10-20ms).
+set-option -g escape-time 10

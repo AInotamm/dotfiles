@@ -1,0 +1,34 @@
+[user]
+	name = swj
+	email = swj@meitu.com
+	editor = $EDITOR
+[github]
+	user = AInotamm
+[core]
+	excludesfile = ~/.gitignore_global
+	autocrlf = false
+	safecrlf = true
+	editor = $EDITOR
+[http]
+	proxy = http://127.0.0.1:1087
+	postBuffer = 52428800
+	sslVerify = false
+[https]
+	proxy = http://127.0.0.1:1087
+	postBuffer = 52428800
+	sslVerify = false
+[alias]
+	unstage = reset HEAD --
+	last = log -1 HEAD
+[color]
+	ui = auto
+	diff = auto
+	status = auto
+	branch = auto
+	page = true
+[credential]
+	helper = store
+[push]
+	default = upstream
+[merge]
+	log = true

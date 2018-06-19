@@ -1,0 +1,47 @@
+# Utility shell functions
+
+# fzf helper
+v() {
+    [ $# -gt 0 ] && fasd -f -e ${EDITOR} "$*" && return
+    local file
+    file="$(fasd -Rfl "$1" | fzf -1 -0 --no-sort +m)" && ${EDITOR} "${file}" || return 1
+}
+
+z() {
+    [ $# -gt 0 ] && fasd_cd -d "$*" && return
+    local dir
+    dir="$(fasd -Rdl "$1" | fzf -1 -0 --no-sort +m)" && cd "${dir}" || return 1
+}
+
+# Source if file exists
+sourceifexists() {
+	[ -f "$1" ] && [ -r "$1" ] && . "$1"
+}
+export sourceifexists >/dev/null
+
+cdw() {
+	local prog="$1"
+	type "$prog" &>/dev/null
+	if [ "$?" -ne 0 ]; then
+		echo "\"${prog}\" not found in \$PATH." >&2
+	else
+		dir=$(dirname $(which "$prog"))
+		echo "$dir"
+		cd "$dir"
+	fi
+}
+export cdw >/dev/null
+$completion -cf cdw
+
+# Time conversions.
+epoch2iso8601() {
+	local epoch="$1"
+	date -d @$epoch +%Y-%m-%dT%H:%M:%S%z
+}
+export epoch2iso8601 >/dev/null
+
+iso86012epoch() {
+	local iso="$1"
+	date -d "$iso" +%s
+}
+export iso86012epoch >/dev/null

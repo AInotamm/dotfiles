@@ -1,0 +1,48 @@
+# Shell aliases
+
+# Suppress alias expansion:: $ \aliasname || 'aliasname'
+# Print alias definition: alias <aliasname>
+
+# Color support {
+	ls_options="--show-control-chars --time-style=long-iso -F"
+	if [ "$TERM" != "dumb" ] && type gdircolors &>/dev/null; then
+		eval "`gdircolors -b $HOME/.dircolors`"
+		
+		# Colors when output is terminal
+		alias ls="gls ${ls_options} --color=auto"
+		# Force colors to all stdouts
+		alias ls="gls ${ls_options} --color=always"
+
+		# Highlights matches when output is on the terminal
+		alias grep='grep --color=auto'
+		# Force color e.g. to use when piping to less
+		alias grepc='grep --color=always'
+		alias fgrepc='fgrep --color=always'
+		alias egrepc='egrep --color=always'
+	else
+		alias ls="gls ${ls_options}"
+	fi
+# }
+
+# Sudo {
+	# Alias for custom
+	alias sudo='sudo ' 
+# }
+
+# Short hands {
+	alias cls='clear'
+	alias ll='ls -l'
+	alias rm='rmtrash'
+	alias vi="${EDITOR}"
+	alias view="${EDITOR} -R"
+	alias vidiff="${EDITOR}diff"
+## gun tools
+	alias find="gfind"
+	alias sed="gsed"
+	alias which="alias | gwhich --tty-only --read-alias --show-dot --show-tilde"
+	alias grep="ggrep"
+# }
+
+# Program aliases {
+	alias laravel="${HOME}/.composer/vendor/bin/laravel"
+# }
