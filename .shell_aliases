@@ -38,11 +38,11 @@
 	alias vidiff="${EDITOR}diff"
 ## gun tools
 	alias find="gfind"
+	alias grep="ggrep"
 	alias sed="gsed"
 	alias which="alias | gwhich --tty-only --read-alias --show-dot --show-tilde"
-	alias grep="ggrep"
 # }
 
 # Program aliases {
-	alias laravel="${HOME}/.composer/vendor/bin/laravel"
+	alias ssh="assh wrapper ssh"
 # }

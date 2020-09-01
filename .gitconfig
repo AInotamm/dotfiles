@@ -1,6 +1,6 @@
 [user]
-	name = swj
-	email = swj@meitu.com
+	name = AInotamm
+	email = ishitoma@outlook.com
 	editor = $EDITOR
 [github]
 	user = AInotamm
@@ -10,25 +10,29 @@
 	safecrlf = true
 	editor = $EDITOR
 [http]
-	proxy = http://127.0.0.1:1087
 	postBuffer = 52428800
 	sslVerify = false
 [https]
-	proxy = http://127.0.0.1:1087
 	postBuffer = 52428800
 	sslVerify = false
 [alias]
 	unstage = reset HEAD --
 	last = log -1 HEAD
 [color]
-	ui = auto
-	diff = auto
-	status = auto
-	branch = auto
+	ui = true
+	diff = true
+	status = true
+	branch = true
 	page = true
+[credential "https://github.com"]
+	username = AInotamm
+[credential "https://gitlab.meitu.com"]
+	username = swj
 [credential]
 	helper = store
 [push]
 	default = upstream
 [merge]
 	log = true
+[url "git@gitlab.meitu.com:"]
+	insteadOf = https://gitlab.meitu.com/

@@ -25,8 +25,7 @@ toggle_mouse() {
         new="on"
     fi
 
-    tmux set -g mouse $new \;\
-    display "mouse: $new"
+    tmux set -g mouse $new \; display "mouse: $new"
 }
 
 toggle_mouse

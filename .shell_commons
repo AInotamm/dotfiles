@@ -1,4 +1,6 @@
 # Common shell settings
+# Edit by Shi Wenjun
+#
 
 # Load utility functions
 source $HOME/.shell_functions
@@ -11,18 +13,18 @@ source $HOME/.shell_functions
 	PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 	# Include binaries in home directory.
-	PATH="$HOME/bin:$PATH"
+	PATH="$HOME/.local/bin:$PATH"
 
 	# Adding some paths
-	#PATH="$HOME/.local/bin:$PATH"
+	#PATH="$PATH"
 	
 	# Set common bin paths.
-	#common_bin_dirs=(mutt mkdirs)
-	#for common_dir in "${common_bin_dirs[@]}"; do
-	#	if [ -d "$HOME/bin/$common_dir" ]; then
-	#		PATH="$PATH:$HOME/bin/$common_dir"
-	#	fi
-	#done
+	common_bin_dirs=(kubebuilder)
+	for common_dir in "${common_bin_dirs[@]}"; do
+		if [ -d "$HOME/.local/$common_dir/bin" ]; then
+			PATH="$HOME/.local/$common_dir/bin:$PATH"
+		fi
+	done
 # }
 
 # Enviroment {
@@ -48,9 +50,11 @@ source $HOME/.shell_functions
 	export TERMEMU=urxvt
 
 	# Docker proxy
-	export http_proxy="http://127.0.0.1:1087"
-	export https_proxy=$http_proxy
-	export no_proxy="127.0.0.1,localhost,::1,172.16.5.4"
+	#export http_proxy="http://proxy1.allin.services:7890"
+	#export https_proxy="http://proxy1.allin.services:7890"
+	export http_proxy="http://127.0.0.1:7890"
+	export https_proxy="http://127.0.0.1:7890"
+	export no_proxy="127.0.0.1,localhost,::1"
 
 	# A better compiler for C lang.
 	type clang >/dev/null 2>&1
@@ -71,7 +75,7 @@ source $HOME/.shell_functions
 	export LANG=en_US.UTF-8
 
     # Emcc
-    export LLVM_ROOT=/usr/local/opt/emscripten/libexec/llvm/bin
+    #export LLVM_ROOT=/usr/local/opt/emscripten/libexec/llvm/bin
 
     # Enable theme vi-mode
     export RPS1="%{$reset_color%}"
@@ -116,12 +120,6 @@ source $HOME/.shell_functions
 		
 		export LESS
 	# }
-
-	# Dot files manager {
-		if [ -d "$HOME/.dotfiles/bin" ]; then
-			PATH="$HOME/.dotfiles/bin:$PATH"
-		fi
-	# }
 	
     # Fuzzy Finder {
         # Init
@@ -160,36 +158,22 @@ source $HOME/.shell_functions
     # Curl plugin
     export PATH="/usr/local/opt/curl/bin:$PATH"
 
+    # PHP7 plugin
+    export PATH="(brew --prefix php)/bin:$PATH"
+
 	# Powerline plugin.
 	export POWERLINE_ROOT=$HOME/Library/Python/3.6/lib/python/site-packages/powerline
-	#type powerline-daemon >/dev/null 2>&1
-	#if [ $? -eq 0 ]; then
-	#	powerline-daemon -q
-	#fi
-
-	# Android SDK
-	#if [ -d "$HOME/src/android-sdk-linux/" ]; then
-	#	PATH="$HOME/src/android-sdk-linux/tools/:$HOME/src/android-sdk-linux/platform-tools/:$PATH"
-	#fi
-	
-	# PHP56
-	#PATH="$(brew --prefix homebrew/php/php56)/bin:$PATH"
-
-	# PHP7
-	PATH="$(brew --prefix homebrew/php/php70)/bin:$PATH"
-
-	# ChinaDNS (deprecate)
-	#chinadns=`ps -ef | grep -v 'grep' | grep -c 'chinadns'`
-	#if [ $chinadns -eq 0 ]; then
-	#	chinadns -c $HOME/.chnroute -s 117.50.11.11,127.0.0.1:15353 -m >/dev/null & 2>&1
-	#fi
-
-	# Open VPN
-	PATH="$(brew --prefix openvpn)/sbin:$PATH"
-
+		
 	# Homebrew
-	export HOMEBREW_GITHUB_API_TOKEN=62499e42f22ca1bb09cd352bba387321e9bc7c67
+	export HOMEBREW_GITHUB_API_TOKEN=6aaa76b827e4f95b6e553afa9ae3cc063b897318
+	export HOMEBREW_FORCE_BREWED_CURL=1
 
-    # XeLatex
-    PATH="/usr/local/texlive/2018basic/bin/x86_64-darwin:$PATH"
-# }
+    # Golang env
+    export GOPATH=$HOME/Work/Projects/Meitu:$HOME/Work/Projects/Other:$HOME/.local/go
+    export GOBIN=$HOME/.local/bin
+
+    # Rust env
+    export RUSTUP_HOME=$HOME/.rustup
+    export CARGO_HOME=$HOME/.cargo
+    export PATH="$CARGO_HOME/bin:$PATH"
+#}

@@ -334,9 +334,8 @@ call plug#begin('~/.vim/plugins')
 	" }
 
 	" Folding {
-
 		" Folds with higher level will be closed
-		set foldlevel =1
+		set foldlevel =5
 
 		" Show a column which indicated open and closed folds
 		set foldcolumn =2
@@ -589,7 +588,7 @@ call plug#end()
 	colorscheme nord
 
 	" Colorscheme extra settings {
-		" Can be enabled to support italic text
+	    " Can be enabled to support italic text
 		let g:nord_italic =1
 
 		" Enable to italicize all comments
@@ -598,11 +597,11 @@ call plug#end()
 		" Increase comment contrast
 		let g:nord_comment_brightness =12
 
-		" Enables uniform activate- and inactive status lines
-		let g:nord_uniform_status_lines =1
-
 		" Uniform vim-diff background
 		let g:nord_uniform_diff_background =1
+
+        " Use the same background color highlighting like the background of the active cursor line
+        let g:nord_cursor_line_number_background =1
 	"}
 
 	" Startup settings {

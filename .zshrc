@@ -15,17 +15,17 @@
 	export ZSH=$HOME/.oh-my-zsh
 	
 	typeset -U path		# Don't add entry to path if it's already present.
-	#path=(~/tmp $path)
 
 	# Function paths.
-	#fpath=(~/.zsh_funcs $fpath)
 	fpath=(/usr/local/share/zsh-completions /usr/local/share/zsh/site-functions $fpath)
 # }
 
 # Common shell settings.
 if [[ -f $HOME/.shell_commons && -r $HOME/.shell_commons ]]; then
+	# shell completion setting
 	export my_shell=zsh
 	export completion=compctl
+
 	# Load Command Default Setting
 	source $HOME/.shell_commons
 fi
@@ -129,14 +129,7 @@ fi
 	# }
 	
 	# Themes {
-	    # Issues with git module when path contains spaces #343
-	    SPACESHIP_DIR_TRUNC_REPO=false
-        # Show exit code of last command
-	    SPACESHIP_EXIT_CODE_SHOW=true
-	    # Show time
-	    SPACESHIP_TIME_SHOW=true
-	    # Format time using 12-hour clock (am/pm)
-	    SPACESHIP_TIME_12HR=true
+	    sourceifexists ~/.zsh_theme
 	# }
 # }
 
@@ -234,17 +227,13 @@ fi
 	source $ZSH/oh-my-zsh.sh
 # }
 
-# Programs {
-	# Autojump {
-	#    [[ -s $(brew --prefix)/etc/profile.d/autojump.sh ]] && . $(brew --prefix)/etc/profile.d/autojump.sh
-	# }
-	
+# Programs {	
 	# FASD {
-	    eval "$(fasd --init auto)"
+	    commandifexists fasd && eval "$(fasd --init auto)"
 	# }
 		
 	# Fuck Command {
-	    eval $(thefuck --alias)
+	    commandifexists thefuck && eval $(thefuck --alias)
 	# }
 	
 	# Fuzzy Finder {
@@ -255,25 +244,12 @@ fi
 		ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=243'
 	# }
 
-	# Incr-Completions {
-	#	source $ZSH/plugins/incr/incr*.zsh
-	# }
-
     # MIME WORDS {
 		autoload -U zsh-mime-setup select-word-style
 		zsh-mime-setup								# Run everything as if it's an executable
 		select-word-style base						# Ctrl+w on words
 	# }
-
-
-	# Powerline {
-    #	if [ $POWERLINE_ROOT ] && [ -d $POWERLINE_ROOT ]; then
-	#		POWERLINE_BASH_SELECT=1
-	#		POWERLINE_BASH_CONTINUATION=1
-	#		source $POWERLINE_ROOT/bindings/zsh/powerline.zsh
-	#	fi
-	# }
-
+	
 	# TMUX {
 		#  To achieve this we let tmux save the path each time the shell prompt is displayed
 		PS1="$PS1"'$([ -n "$TMUX" ] && tmux setenv TMUXPWD_$(tmux display -p "#D" | tr -d %) "$PWD")'
@@ -281,6 +257,14 @@ fi
 	
 	# Interactive CD {
 	    source $ZSH_CUSTOM/plugins/zsh-interactive-cd/zsh-interactive-cd.plugin.zsh
+	# }
+	
+	# GO Environment {
+	    # Multiple version
+	    commandifexists goenv && eval "$(goenv init - $SHELL)"
+
+        # Virtual workspace
+        commandifexists vg && eval "$(vg eval --shell $my_shell)"
 	# }
 # }
 

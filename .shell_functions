@@ -1,4 +1,5 @@
 # Utility shell functions
+# Edit by Shi Wenjun
 
 # fzf helper
 v() {
@@ -17,7 +18,11 @@ z() {
 sourceifexists() {
 	[ -f "$1" ] && [ -r "$1" ] && . "$1"
 }
-export sourceifexists >/dev/null
+
+# Command if file exists
+commandifexists() {
+    command -v "$1" >/dev/null 2>&1
+}
 
 cdw() {
 	local prog="$1"
@@ -30,18 +35,28 @@ cdw() {
 		cd "$dir"
 	fi
 }
-export cdw >/dev/null
-$completion -cf cdw
+
 
 # Time conversions.
 epoch2iso8601() {
 	local epoch="$1"
 	date -d @$epoch +%Y-%m-%dT%H:%M:%S%z
 }
-export epoch2iso8601 >/dev/null
 
 iso86012epoch() {
 	local iso="$1"
 	date -d "$iso" +%s
 }
-export iso86012epoch >/dev/null
+
+# export utils
+exportfunc() {
+    export "$1" >/dev/null    
+}
+
+# export list
+exportfunc cdw
+exportfunc sourceifexists
+exportfunc commandifexists
+
+# other
+$completion -cf cdw

@@ -7,3 +7,6 @@
 [submodule ".oh-my-zsh/custom/themes/spaceship-prompt"]
 	path = .oh-my-zsh/custom/themes/spaceship-prompt
 	url = https://github.com/denysdovhan/spaceship-prompt.git
+[submodule "/Users/SekiFumitoshi/.tmux/plugins/nord-tmux"]
+	path = /Users/SekiFumitoshi/.tmux/plugins/nord-tmux
+	url = https://github.com/arcticicestudio/nord-tmux.git
